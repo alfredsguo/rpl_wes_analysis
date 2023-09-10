@@ -1,5 +1,9 @@
 # rpl_wes_analysis
+
+## One sentence summary
 The de-identified and preprocessed whole exome sequencing (WES) data of 13 uRPL patients in our study.
+
+## Study overview
 Unexplained Recurrent Pregnancy Loss (uRPL) remains a significant clinical challenge, with its etiology often elusive. 
 While whole exome sequencing (WES) pinpoints various genetic factors associated with uRPL, concurrent transcriptomic studies emphasize the role of immune dysregulations. 
 This study endeavors to bridge the gap between genetic and transcriptomic insights. 
