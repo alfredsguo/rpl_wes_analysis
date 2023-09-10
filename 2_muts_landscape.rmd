@@ -1,0 +1,204 @@
+---
+title: "SNPs data preprocessing"
+author: "Shuai, Yi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r include=FALSE}
+# Add required packages
+  library(ggplot2)
+  library(tidyverse)
+  library(hrbrthemes)
+  library("stringr")
+  library(ComplexHeatmap)
+  library(vcfR)
+  library("readxl")
+  library(RIdeogram)
+  library(karyoploteR)
+```
+
+# Fig1A/B - Variants per chromosome
+
+```{r}
+  acmg.final = readRDS("./data_analysis/5_snp_indels_ready_analysis.rds")
+# unique(acmg.final$ExonicFunc.refGenecanonical)
+  acmg.final$Annotation = (acmg.final$ExonicFunc.refGenecanonical)
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "nonsynonymous SNV")] = "nonsynonymous_SNV"
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "start lost" | 
+                              acmg.final$ExonicFunc.refGenecanonical == "stoploss" )] = "start_stop_loss"
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "frameshift deletion" |
+                              acmg.final$ExonicFunc.refGenecanonical == "frameshift insertion")] = "frameshift_indel"
+  # unique(acmg.final$Annotation)
+  sample_gene_list = unique(paste0(acmg.final$SampleName, "_", acmg.final$Gene.refGenecanonical))
+
+# Tutorial data/ reference data
+  data(human_karyotype, package="RIdeogram")
+  data(gene_density, package="RIdeogram")
+  # data(Random_RNAs_500, package="RIdeogram")
+  genome <- human_karyotype[c(1,2,3)]
+  # two_speed_g <- gene_density
+  # two_speed_g$Value <- sample(c(0:1),size = 10,replace = T)
+```
+
+```{r}
+# Type Shape Chr Start End color 
+  recurrent_snv = names(which(table(sapply(strsplit(sample_gene_list, split = "_"), '[', 2)) >= 1 ))
+  rv_gene = NULL
+  for (g in recurrent_snv) {
+    rv_gene <- rbind(rv_gene, acmg.final[which(acmg.final$Gene.refGenecanonical == g),
+                                         c("Annotation","Chr","Start","End")])
+  }
+  colnames(rv_gene)[1] = "Type"
+  rv_gene$End = as.integer(rv_gene$Start+1000)
+  rv_gene$Chr <- sub("^chr", "", rv_gene$Chr)
+  rv_gene$Shape = "circle"
+  rv_gene$Shape[which(rv_gene$Type == "stopgain")] <-"triangle"
+  rv_gene$Shape[which(rv_gene$Type == "start_stop_loss")] <-"box"
+  rv_gene$Shape[which(rv_gene$Type == "splicing")] <-"box"
+  rv_gene$Shape[which(rv_gene$Type == "frameshift_indel")] <-"box"
+  rv_gene$color <-"69b3a2"
+  rv_gene$color[which(rv_gene$Type == "stopgain")] <-"E21818"
+  rv_gene$color[which(rv_gene$Type == "start_stop_loss")] <-"8D7B68"
+  rv_gene$color[which(rv_gene$Type == "splicing")] <-"071952"
+  rv_gene$color[which(rv_gene$Type == "frameshift_indel")] <-"FFDD83"
+  
+  row.names(rv_gene) = NULL
+  rv_gene = rv_gene[,colnames(Random_RNAs_500)]
+  rv_gene$dup = paste0(rv_gene$Type,rv_gene$Chr,rv_gene$Start,rv_gene$End)
+  rv_gene = rv_gene[!duplicated(rv_gene$dup),]
+  rv_gene = rv_gene[,1:6]
+  rv_gene$Value = 1
+  rv_gene$Value[which(rv_gene$Type == "stopgain")] <-2
+  rv_gene$Value[which(rv_gene$Type == "start_stop_loss")] <-3
+  rv_gene$Value[which(rv_gene$Type == "splicing")] <-4
+  rv_gene$Value[which(rv_gene$Type == "frameshift_indel")] <-5
+  col = c("#69b3a2", "#E21818", "#8D7B68","#071952","#FFDD83")
+# plot 1
+  # ideogram(karyotype = genome,
+  #          overlaid =  rv_gene[,c(3,4,5,7)],
+  #          label = NULL,
+  #          label_type = "line",
+  #          colorset1 = c("red"))
+  
+  ideogram(karyotype = genome,
+           overlaid =  rv_gene[,c(3,4,5,7)],
+           label = NULL,
+           label_type = "line", colorset1 = col)
+```
+
+```{r}
+# # plot2
+  # slow<-two_speed_g[two_speed_g$Value=="0",][-ncol(two_speed_g)]
+  # fast<-two_speed_g[two_speed_g$Value=="1",][-ncol(two_speed_g)]
+  # rv_gene2<-rv_gene[c(3,4,5)]
+  # # 绘制染色体示意图
+  # pp<-getDefaultPlotParams(plot.type = 1)
+  # pp$ideogramheight<-0
+  # kp <- plotKaryotype(genome, plot.type=1,plot.params = pp, cex=0.6)
+  # # 绘制双速基因组区域
+  # kp<-kpPlotRegions(kp, slow, col="#F0F4C3")
+  # kp<-kpPlotRegions(kp, fast, col="#B3E5FC")
+  # # 绘制差异表达基因在基因组上的分布情况
+  # kp<-kpPlotRegions(kp, rv_gene2, col="red")
+```
+
+```{r}
+# 1. Prepare the input data  
+  chr_lenght = c(247249719, 242951149, 199501827, 191273063, 180857866, 170899992, 158821424, 146274826, 
+                 140273252, 135374737, 134452384, 132349534, 114142980, 106368585, 100338915, 88827254, 
+                 78774742, 76117153, 63811651, 62435964, 46944323, 49691432, 154913754, 57772954)
+  chr_lenght_rl = chr_lenght/sum(chr_lenght) * 100
+  data = data.frame(snps_counts = table(acmg.final$Chr) )
+  # data = data[,2]
+  colnames(data) = c("Chr","variant_counts")
+  row.names(data) = data$Chr
+  data = data[c("chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9",
+                                 "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17",
+                                 "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY"),]
+  data$Chr = factor( data$Chr, c("chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9",
+                                 "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17",
+                                 "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY"))
+  data$snps_adj = data$variant_counts/chr_lenght_rl
+  
+  
+  p <- ggplot(data, aes(x = Chr, y = snps_adj)) +
+    geom_bar(stat='identity',  fill="steelblue" , width=0.75) +
+    ggtitle("SNPs frequencies per Chr adjusted by length") +
+    theme_classic() +
+    theme(
+      plot.title = element_text(size=15),
+      axis.text.x = element_text(angle = 45, vjust = 0.5)
+    ) +
+    geom_hline(yintercept = mean(data$snps_adj), linetype="dotted", color = "red", size=1)
+
+  p
+
+  ggsave(plot = p, filename = "./image/1_vars_per_unit_chr.pdf", dpi = 300, width = 7, height = 4)
+```
+
+# Fig1C - Variants per sample
+
+```{r fig.height=4, fig.width=4}
+  data = data.frame(snps_counts = table(acmg.final$SampleName) )
+  table(acmg.final$SampleName)
+  colnames(data) = c("Sample","variant_counts")
+  row.names(data) = data$Sample
+  p <- ggplot(data, aes(x = Sample, y = variant_counts)) +
+    geom_bar(stat='identity',  fill="steelblue" , width=0.75) +
+    ggtitle("SNPs frequencies per Sample") +
+    theme_classic() +
+    theme(
+      plot.title = element_text(size=15),
+      axis.text.x = element_text(angle = 45, vjust = 0.5)
+    ) +
+    geom_hline(yintercept = median(data$variant_counts), linetype="dotted", color = "red", size=1)
+  # p
+  ggsave(plot = p, filename = "./image/fig1_2/1_vars_per_sample.pdf", dpi = 300, width = 4, height = 4)
+```
+
+# Fig1D - CNV conditions
+
+```{r}
+# Each sample 
+  recurrent_cnv = na.omit(read.csv("./raw_wes_data/06.CNV/cnv_all.xls", sep = "\t")) 
+  recurrent_cnv$CopyRatio = as.numeric(recurrent_cnv$CopyRatio)
+  final_cnv = recurrent_cnv[, c(1,3,4,5,6,8)] 
+  final_cnv$Chr <- sub("^chr", "",final_cnv$Chr)
+  colnames(final_cnv) =  c("Sample","Type","Chr","Start","End","Value")
+  final_cnv$Value[which(final_cnv$Type == "Duplication")] = 1
+  final_cnv$Value[which(final_cnv$Type == "Deletion")] = -1
+  for (s in unique(final_cnv$Sample)) {
+    final_cnv_sub = final_cnv[which(final_cnv$Sample == s),]
+    ideogram(karyotype = genome,
+           overlaid =  final_cnv_sub,
+           label = NULL,
+           label_type = "line",
+           colorset1 = c("blue","red"),output = paste0("./image/sfig2/",s,".svg"))
+  }
+  
+# Overall samples
+  recurrent_cnv = na.omit(read.csv("./raw_wes_data/06.CNV/cnv_all.xls", sep = "\t")) 
+  recurrent_cnv$CopyRatio = as.numeric(recurrent_cnv$CopyRatio)
+  final_cnv = recurrent_cnv[which(recurrent_cnv$CopyRatio >= 1.0), c(1,3,4,5,6,8)] 
+  final_cnv$Chr <- sub("^chr", "",final_cnv$Chr)
+  colnames(final_cnv) =  c("Sample","Type","Chr","Start","End","Value")
+  final_cnv$Value[which(final_cnv$Type == "Duplication")] = 1
+  final_cnv$Value[which(final_cnv$Type == "Deletion")] = -1
+  # table(final_cnv$Type)
+  ideogram(karyotype = genome,
+           overlaid =  final_cnv,
+           label = NULL,
+           label_type = "line",
+           colorset1 = c("blue","red"))  
+```
+
+```{r}
+  recurrent_cnv$CopyRatio = as.numeric(recurrent_cnv$CopyRatio)
+  final_cnv = recurrent_cnv[which(recurrent_cnv$CopyRatio >= 1.0),] 
+  write.csv(t(table(final_cnv$Sample, final_cnv$Type)), 
+            file = "./image/sfig2/sig_cna_events.csv") 
+```
+
+
+

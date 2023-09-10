@@ -1,0 +1,106 @@
+Description,geneID,Count
+multicellular organismal homeostasis,ABCA4/ABCC8/ADGRV1/FLG/MUC4/MUC6/PLEC/RP1L1/USH2A/VPS13B/ZNF516,11
+tissue homeostasis,ABCA4/ABCC8/ADGRV1/MUC4/MUC6/RP1L1/USH2A/VPS13B,8
+regulation of potassium ion transport,ABCC8/AKAP9/ANK3/NOS1/WNK1,5
+positive regulation of cation transmembrane transport,ABCC8/AKAP9/ANK3/NOS1/RELN/WNK1,6
+regulation of ion transmembrane transporter activity,ABCC8/AHNAK/AKAP9/ANK3/NOS1/RELN/WNK1,7
+regulation of transmembrane transporter activity,ABCC8/AHNAK/AKAP9/ANK3/NOS1/RELN/WNK1,7
+positive regulation of ion transmembrane transport,ABCC8/AKAP9/ANK3/NOS1/RELN/WNK1,6
+regulation of transporter activity,ABCC8/AHNAK/AKAP9/ANK3/NOS1/RELN/WNK1,7
+anatomical structure homeostasis,ABCA4/ABCC8/ADGRV1/MUC4/MUC6/RP1L1/USH2A/VPS13B,8
+cell adhesion,ADGRV1/ANK3/ARID1B/CELSR1/COL14A1/COL6A6/EFS/LAMA3/MUC16/MUC4/OBSCN/PIEZO1/PKD1/PTPN23/RELN/SDK1/SDK2/USH2A/WNK1,19
+positive regulation of ion transmembrane transporter activity,ABCC8/AKAP9/ANK3/RELN/WNK1,5
+positive regulation of transmembrane transport,ABCC8/AKAP9/ANK3/NOS1/RELN/WNK1,6
+detection of mechanical stimulus,ADGRV1/PIEZO1/PKD1/TTN,4
+positive regulation of transporter activity,ABCC8/AKAP9/ANK3/RELN/WNK1,5
+regulation of potassium ion transmembrane transport,ABCC8/AKAP9/ANK3/WNK1,4
+regulation of cation transmembrane transport,ABCC8/AHNAK/AKAP9/ANK3/NOS1/RELN/WNK1,7
+detection of external stimulus,ABCA4/ADGRV1/PIEZO1/PKD1/TTN,5
+cell-cell adhesion,ADGRV1/ANK3/ARID1B/CELSR1/COL14A1/LAMA3/OBSCN/PIEZO1/PKD1/PTPN23/SDK1/SDK2/WNK1,13
+detection of abiotic stimulus,ABCA4/ADGRV1/PIEZO1/PKD1/TTN,5
+multicellular organismal response to stress,ASIC4/BRINP1/NOS1/RELN,4
+photoreceptor cell maintenance,ABCA4/ADGRV1/RP1L1/USH2A,4
+positive regulation of ion transport,ABCC8/AKAP9/ANK3/NOS1/RELN/WNK1,6
+regulation of ion transmembrane transport,ABCC8/AHNAK/AKAP9/ANK3/CACNA1B/NOS1/RELN/WNK1,8
+positive regulation of potassium ion transport,ABCC8/AKAP9/WNK1,3
+positive regulation of potassium ion transmembrane transport,ABCC8/AKAP9/WNK1,3
+myofibril assembly,NEB/OBSCN/PLEC/TTN,4
+striated muscle cell development,NEB/OBSCN/PLEC/TTN,4
+regulation of cation channel activity,ABCC8/AHNAK/ANK3/NOS1/RELN,5
+homeostatic process,ABCA4/ABCC8/ADGRV1/ANK3/DMXL2/FLG/MUC17/MUC4/MUC6/NOS1/PLEC/RP1L1/USH2A/VPS13B/WNK1/ZNF516,16
+cation transmembrane transport,ABCC8/AHNAK/AKAP9/ANK3/ASIC4/CACNA1B/NOS1/PIEZO1/PKD1/RELN/WNK1,11
+cellular component assembly involved in morphogenesis,NEB/OBSCN/PLEC/TTN/VPS13B,5
+nervous system process,ABCA4/ABCA7/ABCC8/ADGRV1/AKAP9/ANK3/BRINP1/DNAH11/MYO9A/OR5H1/PLEC/RELN/RP1L1/TAS2R30/USH2A,15
+regulation of transmembrane transport,ABCC8/AHNAK/AKAP9/ANK3/CACNA1B/NOS1/RELN/WNK1,8
+retina homeostasis,ABCA4/ADGRV1/RP1L1/USH2A,4
+cytoskeleton organization,AKAP9/ANK3/ARHGAP4/CELSR1/DNAH17/DNAH5/EFS/MTCL1/NEB/OBSCN/PKD1/PLEC/RP1L1/SKA3/TCHH/TTN,16
+regulation of sodium ion transmembrane transport,ANK3/NOS1/WNK1,3
+potassium ion transport,ABCC8/AKAP9/ANK3/NOS1/WNK1,5
+positive regulation of transport,ABCA7/ABCC8/AKAP9/ANK3/MTCL1/NOS1/PTPN23/RELN/TTN/WNK1,10
+transmembrane transport,ABCA4/ABCA7/ABCB5/ABCC8/AHNAK/AKAP9/ANK3/ASIC4/CACNA1B/NOS1/PIEZO1/PKD1/RELN/WNK1,14
+muscle cell differentiation,NEB/NOS1/OBSCN/PIEZO1/PLEC/SYNE1/TTN,7
+sarcomere organization,OBSCN/PLEC/TTN,3
+regulation of potassium ion transmembrane transporter activity,ABCC8/AKAP9/ANK3,3
+cilium or flagellum-dependent cell motility,DNAH11/DNAH14/DNAH17/DNAH3/DNAH5,5
+cilium-dependent cell motility,DNAH11/DNAH14/DNAH17/DNAH3/DNAH5,5
+regulation of cyclase activity,ADGRV1/AKAP9/NOS1,3
+striated muscle cell differentiation,NEB/NOS1/OBSCN/PIEZO1/PLEC/TTN,6
+regulation of lyase activity,ADGRV1/AKAP9/NOS1,3
+response to abiotic stimulus,ABCA4/ABCA7/ABCC8/ADGRV1/AKAP9/NOS1/PIEZO1/PKD1/PLEC/TTN/ZNF516,11
+response to mechanical stimulus,ADGRV1/PIEZO1/PKD1/PLEC/TTN,5
+ion transmembrane transport,ABCC8/AHNAK/AKAP9/ANK3/ASIC4/CACNA1B/NOS1/PIEZO1/PKD1/RELN/WNK1,11
+regulation of sodium ion transport,ANK3/NOS1/WNK1,3
+visual perception,ABCA4/ADGRV1/MYO9A/RP1L1/USH2A,5
+negative regulation of transport,ABCA7/ABCC8/ANK3/NOS1/PROM2/WNK1,6
+memory,ABCA7/ABCC8/BRINP1/RELN,4
+cellular component morphogenesis,ANK3/ARHGAP4/LAMA3/MYO9A/NEB/OBSCN/PLEC/RELN/TTN/VPS13B,10
+positive regulation of cation channel activity,ABCC8/ANK3/RELN,3
+neurogenesis,ABCC8/ADGRV1/ANK3/ARHGAP4/BRINP1/CELSR1/LAMA3/MYO9A/PLEC/RELN/RP1L1/SDK1/SDK2/USH2A/VPS13B/WNK1,16
+sensory perception of light stimulus,ABCA4/ADGRV1/MYO9A/RP1L1/USH2A,5
+regulation of metal ion transport,ABCC8/AHNAK/AKAP9/ANK3/NOS1/WNK1,6
+inorganic cation transmembrane transport,ABCC8/AHNAK/AKAP9/ANK3/ASIC4/CACNA1B/NOS1/PKD1/WNK1,9
+associative learning,ABCA7/ABCC8/RELN,3
+cation transport,ABCC8/AHNAK/AKAP9/ANK3/ASIC4/CACNA1B/NOS1/PIEZO1/PKD1/RELN/WNK1,11
+plasma membrane organization,ABCA7/AHNAK/ANK3/PLEC,4
+regulation of ion transport,ABCC8/AHNAK/AKAP9/ANK3/CACNA1B/NOS1/RELN/WNK1,8
+digestive system process,MUC4/MUC6/WNK1,3
+microtubule-based process,AKAP9/DNAH11/DNAH14/DNAH17/DNAH3/DNAH5/KIF7/MTCL1/PKD1/RP1L1/SKA3,11
+homophilic cell adhesion via plasma membrane adhesion molecules,CELSR1/PKD1/PTPN23/SDK1/SDK2,5
+endomembrane system organization,ABCA7/AHNAK/AKAP9/ANK3/PLEC/SYNE1/VPS13B,7
+detection of stimulus,ABCA4/ADGRV1/OR5H1/PIEZO1/PKD1/TAS2R30/TTN,7
+cell motility,ABCC8/ARHGAP4/CELSR1/DNAH11/DNAH14/DNAH17/DNAH3/DNAH5/EFS/LAMA3/PLEC/PTPN23/RELN/USH2A/WNK1,15
+learning or memory,ABCA7/ABCC8/BRINP1/DNAH11/RELN,5
+cell junction organization,ABCC8/ANK3/LAMA3/MYO9A/PLEC/PTPN23/RELN/SDK1/SDK2,9
+anatomical structure formation involved in morphogenesis,ABCC8/CELSR1/LAMA3/NEB/NOS1/OBSCN/PLEC/RELN/SDK1/SDK2/TTN/VPS13B,12
+cell-cell adhesion via plasma-membrane adhesion molecules,CELSR1/PKD1/PTPN23/SDK1/SDK2/WNK1,6
+generation of neurons,ADGRV1/ANK3/ARHGAP4/BRINP1/CELSR1/LAMA3/MYO9A/RELN/RP1L1/SDK1/SDK2/USH2A/VPS13B/WNK1,14
+cardiac muscle cell development,NEB/PLEC/TTN,3
+vesicle-mediated transport to the plasma membrane,ANK3/PTPN23/VPS13B,3
+epidermal cell differentiation,FLG/PLEC/TCHH/USH2A,4
+sodium ion transmembrane transport,ANK3/ASIC4/NOS1/WNK1,4
+potassium ion transmembrane transport,ABCC8/AKAP9/ANK3/WNK1,4
+cardiac cell development,NEB/PLEC/TTN,3
+muscle structure development,ARID1B/NEB/NOS1/OBSCN/PIEZO1/PLEC/SYNE1/TTN,8
+inorganic ion transmembrane transport,ABCC8/AHNAK/AKAP9/ANK3/ASIC4/CACNA1B/NOS1/PKD1/WNK1,9
+microtubule bundle formation,DNAH17/DNAH5/MTCL1/RP1L1,4
+epidermis development,FLG/LAMA3/PLEC/TCHH/USH2A,5
+neuron differentiation,ADGRV1/ANK3/ARHGAP4/BRINP1/LAMA3/MYO9A/RELN/RP1L1/SDK1/SDK2/USH2A/VPS13B/WNK1,13
+digestion,MUC4/MUC6/WNK1,3
+behavior,ABCA7/ABCC8/ASIC4/BRINP1/DNAH11/RELN/SDK1,7
+organelle assembly,DNAH17/DNAH5/NEB/OBSCN/PLEC/PTPN23/PWP2/RP1L1/TTN/VPS13B,10
+metal ion transport,ABCC8/AHNAK/AKAP9/ANK3/ASIC4/CACNA1B/NOS1/PKD1/WNK1,9
+morphogenesis of a polarized epithelium,CELSR1/LAMA3/MYO9A,3
+muscle cell development,NEB/OBSCN/PLEC/TTN,4
+behavioral fear response,ASIC4/BRINP1,2
+behavioral defense response,ASIC4/BRINP1,2
+protein kinase A signaling,ADGRV1/TTN,2
+regulation of cell adhesion mediated by integrin,PIEZO1/WNK1,2
+regulation of sodium ion transmembrane transporter activity,ANK3/WNK1,2
+cognition,ABCA7/ABCC8/BRINP1/DNAH11/RELN,5
+maintenance of protein location,ANK3/PKD1/SYNE1,3
+regulation of transport,ABCA7/ABCC8/AHNAK/AKAP9/ANK3/CACNA1B/MTCL1/NOS1/PROM2/PTPN23/RELN/TTN/WNK1,13
+response to fluid shear stress,PKD1/PLEC,2
+negative regulation of endocytosis,ABCA7/PROM2,2
+axonemal dynein complex assembly,DNAH17/DNAH5,2
+negative regulation of ion transport,ANK3/NOS1/WNK1,3
+cardiac muscle cell differentiation,NEB/PLEC/TTN,3

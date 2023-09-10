@@ -1,0 +1,161 @@
+---
+title: "SNPs data preprocessing"
+author: "Shuai, Yi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Add required packages
+  library(ggplot2)
+  library(tidyverse)
+  library(hrbrthemes)
+  library("stringr")
+  library(ComplexHeatmap)
+  library(vcfR)
+  library("readxl")
+```
+
+```{r}
+  list.files("./data_analysis/")
+```
+
+#----------------------------------------------------
+# 1. Go with the ACMG results
+#----------------------------------------------------
+
+```{r}
+  # snp.anno = readRDS("./data_analysis/2_snps.annovar.rds")
+  # dim(snp.anno) # 936754     69
+  # indel.anno = readRDS("./data_analysis/2_indel.annovar.rds")
+  # dim(indel.anno) # 141832     69
+  
+  snp.acmg.total = readRDS("./data_analysis/3_total.acmg.rds")
+  # targeted.depth = snp.acmg.total$Depth[snp.acmg.total$Depth[which(snp.acmg.total$Func.refGenecanonical == "exonic")]]
+  # hist(targeted.depth)
+  # mean(targeted.depth)
+  # quantile(targeted.depth,probs = 0.1)
+```
+
+```{r fig.height=4, fig.width=5}
+# The plot of total vars
+  df = data.frame(sort(table(snp.acmg.total$Func.refGenecanonical),decreasing = T))
+  # sort(table(snp.acmg.total$Func.refGenecanonical),decreasing = T)
+  #  intronic              exonic          intergenic                UTR3                UTR5        
+  #    618635              272527               79821               33251               20256               
+  #  ncRNA_exonic      ncRNA_intronic            upstream          downstream     exonic;splicing            
+  #         16279               14307               12383                5780                2791                 
+  # splicing upstream;downstream      ncRNA_splicing      UTR5;UTR3 
+  #        1660                 771                  76          49 
+  p =
+    ggplot(df, aes(x = Var1, y = Freq)) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    xlab("") +
+    ylab("Counts") +
+    ggtitle("") + theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+  p
+  ggsave(plot = p, filename = "./image/sfig1/1_barplot_of_total_var.pdf", width = 5, height = 3)
+```
+
+```{r fig.height=4, fig.width=5}
+# Subset the SNPs whose Func.refGenecanonical is exonic
+  snp.acmg.exonic = snp.acmg.total[-which(snp.acmg.total$ExonicFunc.refGenecanonical == "." |
+                                          snp.acmg.total$ExonicFunc.refGenecanonical == "unknown" ),] # 274674
+  
+  df = data.frame(sort(table(snp.acmg.exonic$ExonicFunc.refGenecanonical),decreasing = T))
+  sort(table(snp.acmg.exonic$ExonicFunc.refGenecanonical),decreasing = T)
+  
+  # synonymous SNV; nonsynonymous SNV; nonframeshift substitution                   
+  #         143422;            122149;                       1871                                                                     
+  # splicing; nonframeshift deletion; nonframeshift insertion; frameshift insertion        
+  #     1660;                   1352;                    1144;                 1036
+  # frameshift deletion; stopgain; start lost; stoploss
+  #                 835       826;        280;       99
+  p =
+    ggplot(df, aes(x = Var1, y = Freq)) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    xlab("") +
+    ylab("Counts") +
+    ggtitle("") + theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+  p
+  ggsave(plot = p, filename = "./image/sfig1/2_barplot_of_exonic_var.pdf", width = 5, height = 3)
+  
+  length(which(snp.acmg.exonic$ExonicFunc.refGenecanonical == "synonymous SNV" |
+               snp.acmg.exonic$ExonicFunc.refGenecanonical == "nonframeshift deletion" |
+               snp.acmg.exonic$ExonicFunc.refGenecanonical == "nonframeshift insertion" |
+               snp.acmg.exonic$ExonicFunc.refGenecanonical == "nonframeshift substitution" ))
+  snp.acmg.exonic2 = snp.acmg.exonic[-which(snp.acmg.exonic$ExonicFunc.refGenecanonical == "synonymous SNV" |
+                                            snp.acmg.exonic$ExonicFunc.refGenecanonical == "nonframeshift deletion" |
+                                            snp.acmg.exonic$ExonicFunc.refGenecanonical == "nonframeshift insertion" |
+                                            snp.acmg.exonic$ExonicFunc.refGenecanonical == "nonframeshift substitution" ), ]
+
+```
+
+```{r fig.height=4, fig.width=5}
+# Filter based on freq
+  # length(which(as.numeric(snp.acmg.exonic2$gnomAD_exome_EAS) >= 0.01)) # 118542
+  snp.acmg.exonic.rare = snp.acmg.exonic2[-(which(as.numeric(snp.acmg.exonic2$gnomAD_exome_EAS) >= 0.01)),] 
+  # head(snp.acmg.exonic.rare)
+  snp.acmg.exonic.rare$Level = factor(snp.acmg.exonic.rare$Level, levels = c("Pathogenic","Likely pathogenic","VUS","VUS_FP","Likely benign","Benign"))
+  # table(snp.acmg.exonic.rare$Level)
+  # Pathogenic Likely pathogenic               VUS            VUS_FP     Likely benign            Benign 
+  #         51               146              6063                22                30              2031
+  
+  df = data.frame(table(snp.acmg.exonic.rare$Level))
+  p =
+    ggplot(df, aes(x = Var1, y = Freq)) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    xlab("") +
+    ylab("Counts") +
+    ggtitle("") + theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+  p
+  ggsave(plot = p, filename = "./image/sfig1/3_barplot_of_prediction.pdf", width = 5, height = 3)
+```
+
+```{r fig.height=4, fig.width=5}
+# Select path vars
+  # 8343-6260t
+  snp.acmg.final = snp.acmg.exonic.rare[which(snp.acmg.exonic.rare$Level == "Pathogenic" |
+                                              snp.acmg.exonic.rare$Level == "Likely pathogenic" |
+                                              snp.acmg.exonic.rare$Level == "VUS" ),] 
+  # snp.acmg.final = snp.acmg.exonic.rare[-which(snp.acmg.exonic.rare$Level == "Pathogenic" |
+  #                                              snp.acmg.exonic.rare$Level == "Likely pathogenic" |
+  #                                              snp.acmg.exonic.rare$Level == "VUS" ),] 
+  saveRDS(snp.acmg.final, file = "./data_analysis/5_snp_indels_ready_analysis.rds")
+```
+
+#----------------------------------------------------
+# 2. Stats of ready-to-analysis data
+#----------------------------------------------------
+
+```{r}
+ acmg.final = readRDS("./data_analysis/5_snp_indels_ready_analysis.rds")
+ # table(acmg.final$ExonicFunc.refGenecanonical)
+ #  frameshift deletion; frameshift insertion; nonsynonymous SNV; splicing; start lost; stopgain; stoploss 
+ #                  124;                   66;              5828;       93;         17;      126;        6 
+ df = data.frame(table(acmg.final$ExonicFunc.refGenecanonical))
+ p =
+    ggplot(df, aes(x = Var1, y = Freq)) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    xlab("") +
+    ylab("Counts") +
+    ggtitle("") + theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+  p
+  ggsave(plot = p, filename = "./image/sfig1/4_barplot_of_final.pdf", width = 5, height = 3)
+```
+
+```{r}
+  # sort(table(acmg.final$ExonicFunc.refGenecanonical), decreasing = T)
+  # round( sort(table(acmg.final$ExonicFunc.refGenecanonical), decreasing = T)/sum(table(acmg.final$ExonicFunc.refGenecanonical)), 3)
+  result <- acmg.final %>% group_by(SampleName) %>% summarize( sum = length(SampleName) )
+  mean(result$sum)#; sd(result$sum)
+  head(acmg.final)
+```
+
+
+
+

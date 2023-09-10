@@ -1,0 +1,351 @@
+---
+title: "SNPs data preprocessing"
+author: "Shuai, Yi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r include=FALSE}
+# Add required packages
+  library(ggplot2)
+  library(tidyverse)
+  library(hrbrthemes)
+  library("stringr")
+  library(ComplexHeatmap)
+  library(vcfR)
+  library("readxl")
+```
+
+
+#-------------------------------------
+# 1. Identify the r.v. genes
+#-------------------------------------
+
+```{r}
+  acmg.final = readRDS("./data_analysis/5_snp_indels_ready_analysis.rds")
+# unique(acmg.final$ExonicFunc.refGenecanonical)
+  acmg.final$Annotation = (acmg.final$ExonicFunc.refGenecanonical)
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "nonsynonymous SNV")] = "nonsynonymous_SNV"
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "start lost" | 
+                              acmg.final$ExonicFunc.refGenecanonical == "stoploss" )] = "start_stop_loss"
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "frameshift deletion" |
+                              acmg.final$ExonicFunc.refGenecanonical == "frameshift insertion")] = "frameshift_indel"
+  unique(acmg.final$Annotation)
+
+# Prepare the input data for High impact SNVs
+  sample_gene_list = unique(paste0(acmg.final$SampleName, "_", acmg.final$Gene.refGenecanonical))
+  # hist(table(sapply(strsplit(sample_gene_list, split = "_"), '[', 2)), decreasing = T)
+  recurrent_vars = names(which(table(sapply(strsplit(sample_gene_list, split = "_"), '[', 2)) >= 4 ))
+  save(recurrent_vars, file = "./data_analysis/6_recur_74genes.RData")
+```
+
+```{r}
+  acmg.rv = NULL
+  for (g in recurrent_vars) {
+    temp = acmg.final[which(acmg.final$Gene.refGenecanonical == g),]
+    acmg.rv = rbind(acmg.rv, temp)
+  }
+  
+  table(acmg.rv$Annotation)  
+
+  chr_lenght = c(247249719, 242951149, 199501827, 191273063, 180857866, 170899992, 158821424, 146274826, 
+                 140273252, 135374737, 134452384, 132349534, 114142980, 106368585, 100338915, 88827254, 
+                 78774742, 76117153, 63811651, 62435964, 46944323, 49691432, 154913754) #, 57772954
+  chr_lenght_rl = chr_lenght/sum(chr_lenght) * 100
+  data = data.frame(snps_counts = table(acmg.rv$Chr) )
+  # data = data[,2]
+  colnames(data) = c("Chr","variant_counts")
+  row.names(data) = data$Chr
+  data = data[c("chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9",
+                                 "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17",
+                                 "chr18", "chr19", "chr20", "chr21", "chr22", "chrX"),]
+  data$Chr = factor( data$Chr, c("chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9",
+                                 "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17",
+                                 "chr18", "chr19", "chr20", "chr21", "chr22", "chrX"))
+  data$snps_adj = data$variant_counts/chr_lenght_rl
+  
+  
+  p <- ggplot(data, aes(x = Chr, y = snps_adj)) +
+    geom_bar(stat='identity',  fill="steelblue" , width=0.75) +
+    ggtitle("SNPs frequencies per Chr adjusted by length") +
+    theme_classic() +
+    theme(
+      plot.title = element_text(size=15),
+      axis.text.x = element_text(angle = 45, vjust = 0.5)
+    ) +
+    geom_hline(yintercept = mean(data$snps_adj), linetype="dotted", color = "red", size=1)
+
+  p
+  ggsave(plot = p, filename = "./image/fig1_2/fig2b_vars_per_unit_chr.pdf", dpi = 300, width = 7, height = 4)
+```
+
+#----------------------------------------------------
+# 2. The signature of recurrent r.v. genes
+#----------------------------------------------------
+
+```{r fig.height=3, fig.width=10}
+  load("./data_analysis/6_recur_74genes.RData")
+  library(clusterProfiler)  
+  library(DOSE)
+  library("org.Hs.eg.db")  
+  ego <- enrichGO(gene          = recurrent_vars,
+                  keyType       = 'SYMBOL',
+                  universe      = unique(acmg.final$Gene.refGenecanonical),
+                  OrgDb         = org.Hs.eg.db,
+                  ont           = "ALL",
+                  pAdjustMethod = "none", 
+                  pvalueCutoff  = 0.05,
+                  readable      = TRUE)
+  write.csv(ego@result, file = "./image/2_recur_74genes_enrichGO.csv")
+  save(ego, file = "./data_analysis/6_recur_74genes_enrichGO.RData")
+```
+
+
+```{r fig.height=3, fig.width=10}
+# GO Plot
+  load(file = "./data_analysis/6_recur_74genes_enrichGO.RData")
+  y <- as.data.frame(ego)
+  enrichment_plot <- y[c(1:15),] %>% 
+    arrange(p.adjust) %>%
+    mutate(Description = fct_reorder(Description, p.adjust, .desc = T))
+  p =
+  ggplot(enrichment_plot, aes(x = Description, y = -log10(p.adjust), fill = p.adjust)) +
+    geom_bar(stat = "identity") +
+    coord_flip() +
+    labs(x = "", y = "-log10(Adjusted P-value)", fill = "Adjusted P-value") +
+    theme_classic() +
+    scale_fill_gradient(low = "red", high = "blue")
+  
+  pdf("./image/3_gsea_recur_genes.pdf", width = 10, height = 3)
+  p
+  dev.off()
+```
+
+#----------------------------------------------------
+# 3. The signature of recurrent r.v. genes
+#----------------------------------------------------
+
+```{r}
+# Load the data
+  load("./data_analysis/6_recur_74genes.RData")
+```
+
+```{r fig.width=7, fig.height=10}
+# oncoprint plot
+  mat = matrix(data = "",nrow = length(recurrent_vars), ncol = 13)
+  colnames(mat) = unique(acmg.final$SampleName)
+  rownames(mat) = recurrent_vars
+  for (i in recurrent_vars) {
+    for (j in unique(acmg.final$SampleName)) {
+      temp_id = which(acmg.final$Gene.refGenecanonical == i & acmg.final$SampleName == j)
+      if (!identical(temp_id, integer(0))) {
+        temp = acmg.final[temp_id,]
+        mat[i,j] = paste(temp$Annotation, collapse = ";")
+      }
+    }
+  }
+  # head(mat)
+  col = c(nonsynonymous_SNV = "#69b3a2", stopgain = "#E21818",
+          frameshift_indel = "#FFDD83",
+          start_stop_loss = "#8D7B68", splicing = "#071952")
+
+  p = oncoPrint(mat, alter_fun_is_vectorized = FALSE,
+                alter_fun = list(
+                    nonsynonymous_SNV =  function(x, y, w, h) grid.rect(x, y, w*0.9, h*0.9, 
+                        gp = gpar(fill = col["nonsynonymous_SNV"], col = NA)),
+                    stopgain =  function(x, y, w, h) grid.rect(x, y, w*0.9, h*0.9, 
+                        gp = gpar(fill = col["stopgain"], col = NA)),
+                    splicing = function(x, y, w, h) grid.rect(x, y, w*0.9, h*0.9, 
+                        gp = gpar(fill = col["splicing"], col = NA)),
+                    start_stop_loss = function(x, y, w, h) grid.rect(x, y, w*0.9, h*0.9, 
+                        gp = gpar(fill = col["start_stop_loss"], col = NA)),
+                    frameshift_indel = function(x, y, w, h) grid.rect(x, y, w*0.9, h*0.9, 
+                        gp = gpar(fill = col["frameshift_indel"], col = NA)) ),
+                col = col)
+  pdf(file = "./image/4_snps_landscape.pdf", width = 7, height = 10)
+  p
+  dev.off()
+```
+
+
+#------------------------------------------------------------
+# 4. The protein length distribution of r.v.
+#------------------------------------------------------------
+
+```{r fig.width=6, fig.height=4}
+library(biomaRt)
+ensembl <- useMart("ensembl")
+ensembl <- useDataset("hsapiens_gene_ensembl", mart = ensembl)
+attributes <- listAttributes(ensembl)
+```
+
+
+```{r fig.width=6, fig.height=4}
+  acmg.final = readRDS("./data_analysis/5_snp_indels_ready_analysis.rds")
+# unique(acmg.final$ExonicFunc.refGenecanonical)
+  acmg.final$Annotation = (acmg.final$ExonicFunc.refGenecanonical)
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "nonsynonymous SNV")] = "nonsynonymous_SNV"
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "start lost" | 
+                              acmg.final$ExonicFunc.refGenecanonical == "stoploss" )] = "start_stop_loss"
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "frameshift deletion" |
+                              acmg.final$ExonicFunc.refGenecanonical == "frameshift insertion")] = "frameshift_indel"
+  unique(acmg.final$Annotation)
+```
+
+```{r fig.width=6, fig.height=4}
+  pdf(file = paste0("./image/fig1_2/fig2c_aa_distr.pdf"), width = 6, height = 4)
+  genes = c("MUC4", "MUC6", "MUC16", "MUC17")
+  for (g in genes) {
+    muts = acmg.final[which(acmg.final$Gene.refGenecanonical == g & acmg.final$Annotation == "nonsynonymous_SNV"), c("AAChange.refGenecanonical","SampleName")]
+    protein.id = 
+      unique(sub("(.*?)[.].*:.*", "\\1", names(table(muts$AAChange.refGenecanonical))))
+    cds_info <- na.omit(getBM(attributes = c("cdna_coding_start","cdna_coding_end"), filters = "refseq_mrna", values = protein.id, mart = ensembl))
+    cds_length <- max(cds_info[["cdna_coding_end"]]) - min(cds_info[["cdna_coding_start"]]) + 1
+    protein_length = (round(cds_length/3))
+    muts.protein = sub(".*:(p\\..*)", "\\1", names(table(muts$AAChange.refGenecanonical)) )
+
+    muts.sites = gsub("[^0-9]", "", muts.protein)
+    muts$protein = muts$AAChange.refGenecanonical
+    muts$sites = muts$AAChange.refGenecanonical
+    for (i in 1:length(table(muts$AAChange.refGenecanonical))) {
+      idx = which(muts$AAChange.refGenecanonical == names(table(muts$AAChange.refGenecanonical))[i])
+      muts$protein[idx] = muts.protein[i]
+      muts$sites[idx] = muts.sites[i]
+    }
+    mutations_plot <- muts %>% 
+      group_by(sites) %>% 
+      summarize(count = n()) %>% 
+      arrange(sites) %>% 
+      mutate(order = 1:n())
+    mutation_positions <- as.integer(mutations_plot$sites)
+    mutation_counts <- mutations_plot$count
+    amino_acid_positions <- 1:protein_length
+    p = 
+      plot(amino_acid_positions, rep(0,length(amino_acid_positions)), type="n", xlab="Amino acid position", ylab="Mutation count",
+             main = paste0(g), ylim=c(0,max(mutation_counts)))+
+      points(mutation_positions, mutation_counts, pch=16, col="#69b3a2") +
+      for(i in 1:length(mutation_positions)){
+        segments(mutation_positions[i], 0, mutation_positions[i], mutation_counts[i], col="#E21818")
+      }
+    print(p)
+  }
+  dev.off()
+```
+
+```{r fig.width=6, fig.height=4}
+  genes = c("ABCA4", "ABCA7", "ABCB5", "ABCC8", "ADGRV1", "ANK3", "SDK1", "PIEZO1", "PKD1")
+  pdf(file = paste0("./image/sfig3/aa_distr_other_nine.pdf"), width = 6, height = 4)
+  for (g in genes) {
+    muts = acmg.final[which(acmg.final$Gene.refGenecanonical == g & acmg.final$Annotation == "nonsynonymous_SNV"), c("AAChange.refGenecanonical","SampleName")]
+    protein.id = 
+      unique(sub("(.*?)[.].*:.*", "\\1", names(table(muts$AAChange.refGenecanonical))))
+    cds_info <- na.omit(getBM(attributes = c("cdna_coding_start","cdna_coding_end"), filters = "refseq_mrna", values = protein.id, mart = ensembl))
+    cds_length <- max(cds_info[["cdna_coding_end"]]) - min(cds_info[["cdna_coding_start"]]) + 1
+    protein_length = (round(cds_length/3))
+    muts.protein = sub(".*:(p\\..*)", "\\1", names(table(muts$AAChange.refGenecanonical)) )
+
+    muts.sites = gsub("[^0-9]", "", muts.protein)
+    muts$protein = muts$AAChange.refGenecanonical
+    muts$sites = muts$AAChange.refGenecanonical
+    for (i in 1:length(table(muts$AAChange.refGenecanonical))) {
+      idx = which(muts$AAChange.refGenecanonical == names(table(muts$AAChange.refGenecanonical))[i])
+      muts$protein[idx] = muts.protein[i]
+      muts$sites[idx] = muts.sites[i]
+    }
+    mutations_plot <- muts %>% 
+      group_by(sites) %>% 
+      summarize(count = n()) %>% 
+      arrange(sites) %>% 
+      mutate(order = 1:n())
+    mutation_positions <- as.integer(mutations_plot$sites)
+    mutation_counts <- mutations_plot$count
+    amino_acid_positions <- 1:protein_length
+    p = 
+      plot(amino_acid_positions, rep(0,length(amino_acid_positions)), type="n", xlab="Amino acid position", ylab="Mutation count",
+             main = paste0(g), ylim=c(0,max(mutation_counts)))+
+      points(mutation_positions, mutation_counts, pch=16, col="#69b3a2") +
+      for(i in 1:length(mutation_positions)){
+        segments(mutation_positions[i], 0, mutation_positions[i], mutation_counts[i], col="#E21818")
+      }
+    print(p)
+  }
+  dev.off()
+```
+
+#------------------------------------------------------------
+# 5. The variants of interested genes (MUC, ABC**, and Structural protein)
+#------------------------------------------------------------
+
+```{r}
+  acmg.final = readRDS("./data_analysis/5_snp_indels_ready_analysis.rds")
+# unique(acmg.final$ExonicFunc.refGenecanonical)
+  acmg.final$Annotation = (acmg.final$ExonicFunc.refGenecanonical)
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "nonsynonymous SNV")] = "nonsynonymous_SNV"
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "start lost" | 
+                              acmg.final$ExonicFunc.refGenecanonical == "stoploss" )] = "start_stop_loss"
+  acmg.final$Annotation[which(acmg.final$ExonicFunc.refGenecanonical == "frameshift deletion" |
+                              acmg.final$ExonicFunc.refGenecanonical == "frameshift insertion")] = "frameshift_indel"
+```
+
+```{r}
+
+
+muc16_var = which(acmg.final$Gene.refGenecanonical == "MUC16" & acmg.final$Annotation == "nonsynonymous_SNV")
+muc16_list = acmg.final[muc16_var,]
+unique(muc16_list$AAChange.refGenecanonical)
+
+muc6_var = which(acmg.final$Gene.refGenecanonical == "MUC6" & acmg.final$Annotation == "nonsynonymous_SNV")
+muc6_list = acmg.final[muc6_var,]
+unique(muc6_list$AAChange.refGenecanonical)
+
+muc17_var = which(acmg.final$Gene.refGenecanonical == "MUC17" & acmg.final$Annotation == "nonsynonymous_SNV")
+muc17_list = acmg.final[muc17_var,]
+unique(muc17_list$AAChange.refGenecanonical)
+```
+
+```{r}
+  genes = c("ABCA4", "ABCA7", "ABCB5", "ABCC8", "ADGRV1", "ANK3", "SDK1", "PIEZO1", "PKD1")
+  for (g in genes) {
+    temp_var = which(acmg.final$Gene.refGenecanonical == g & acmg.final$Annotation == "nonsynonymous_SNV")
+    temp_list = acmg.final[temp_var,]
+    print(unique(temp_list$AAChange.refGenecanonical)) 
+  }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
