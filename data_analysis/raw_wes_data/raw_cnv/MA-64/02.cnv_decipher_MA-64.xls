@@ -1,0 +1,9 @@
+Sample	cnv	CopyRatio	CytoBand	Size	ClinilcalLevel	summary
+MA-64	chr2:97862214-97916055_dup	0.79	2q11.2	53.84Kb	VUS	2号染色体上q11.2处重复53.84Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及1个RefSeq蛋白编码基因。
+MA-64	chr2:179566710-179639269_dup	1.3	2q31.2	72.56Kb	VUS	2号染色体上q31.2处重复72.56Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及1个RefSeq蛋白编码基因。覆盖了TTN基因[OMIM:188840]，该基因的突变与dilated cardiomyopathy-1G (CMD1G)[OMIM:604145]和familial hypertrophic cardiomyopathy-9(CMH9) [OMIM:613765]相关，CMD1G和CMH9均为常染色体显性遗传，CMD1G患者主要表现为扩张型心肌病，CMH9患者主要表现为肥厚性心肌病。
+MA-64	chr6:32485632-32628834_dup	1.26	6p21.32	0.14Mb	VUS	6号染色体上p21.32处重复0.14Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及4个RefSeq蛋白编码基因。覆盖了HLA-DQB1基因[OMIM:604305]，{Multiple sclerosis, susceptibility to, 1}, 126200 (3), Multifactorial; {Celiac disease, susceptibility to}, 212750 (3), Autosomal recessive, Multifactorial; {Creutzfeldt-Jakob disease, variant, resistance to}, 123400 (3), Autosomal dominant；覆盖了HLA-DRB1基因[OMIM:142857]，{Sarcoidosis, susceptibility to, 1}, 181000 (3), Autosomal dominant; {Multiple sclerosis, susceptibility to, 1}, 126200 (3), Multifactorial。
+MA-64	chr7:76019228-76112454_dup	1.08	7q11.23	93.23Kb	VUS	7号染色体上q11.23处重复93.23Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及3个RefSeq蛋白编码基因。覆盖了ZP3基因[OMIM:182889]，Oocyte maturation defect 3, 617712 (3), Autosomal dominant。
+MA-64	chr11:89771863-89820166_dup	1.06	11q14.3	48.30Kb	VUS	11号染色体上q14.3处重复48.3Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及2个RefSeq蛋白编码基因。
+MA-64	chrY:14902309-15029251_dup	1.33	Yq11.21	0.13Mb	VUS	Y号染色体上q11.21处重复0.13Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及2个RefSeq蛋白编码基因。覆盖了USP9Y基因[OMIM:400005]，该基因的突变与SPERMATOGENIC FAILURE, Y-LINKED, 2(SPGFY2)[OMIM:415000]相关，其患者主要表现为无精症或严重的少精症致不育。
+MA-64	chr7:6859391-6864459_del	0.76	7p22.1	5.07Kb	VUS	7号染色体上p22.1处缺失5.07Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及1个RefSeq蛋白编码基因。
+MA-64	chr9:69002208-69257045_del	0.56	9q21.11	0.25Mb	VUS	9号染色体上q21.11处缺失0.25Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及2个RefSeq蛋白编码基因。

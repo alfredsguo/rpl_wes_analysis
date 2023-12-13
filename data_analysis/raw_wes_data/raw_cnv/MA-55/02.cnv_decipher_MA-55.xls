@@ -1,0 +1,7 @@
+Sample	cnv	CopyRatio	CytoBand	Size	ClinilcalLevel	summary
+MA-55	chr11:134153584-134215194_dup	1.49	11q25	61.61Kb	VUS	11号染色体上q25处重复61.61Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及2个RefSeq蛋白编码基因。
+MA-55	chr5:140214254-140238186_del	0.43	5q31.3	23.93Kb	VUS	5号染色体上q31.3处缺失23.93Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及10个RefSeq蛋白编码基因。
+MA-55	chr6:31129123-31239902_del	0	6p21.33	0.11Mb	VUS	6号染色体上p21.33处缺失0.11Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及3个RefSeq蛋白编码基因。覆盖了HLA-C基因[OMIM:142840]，{Psoriasis susceptibility 1}, 177900 (3), Multifactorial; {HIV-1 viremia, susceptibility to}, 609423 (3)。
+MA-55	chr8:7218502-7719927_del	0.19	8p23.1	0.50Mb	VUS	8号染色体上p23.1处缺失0.5Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。完全被良性区间8p23.1 region (DEFB gene cluster) deletion[ClinGen:ISCA-37472]所覆盖，经查询ClinGen数据库资源，有证据（Haploinsufficiency Score:40）表明该区域不受单倍剂量敏感性的影响。涉及15个RefSeq蛋白编码基因。
+MA-55	chr8:11970069-12032022_del	0.04	8p23.1	61.95Kb	VUS	8号染色体上p23.1处缺失61.95Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及3个RefSeq蛋白编码基因。
+MA-55	chr8:113236832-113347815_del	0.83	8q23.3	0.11Mb	VUS	8号染色体上q23.3处缺失0.11Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及1个RefSeq蛋白编码基因。

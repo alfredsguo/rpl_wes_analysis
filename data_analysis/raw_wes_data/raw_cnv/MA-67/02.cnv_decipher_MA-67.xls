@@ -1,0 +1,14 @@
+Sample	cnv	CopyRatio	CytoBand	Size	ClinilcalLevel	summary
+MA-67	chr1:146399379-146406062_dup	0.82	1q21.1	6.68Kb	VUS	1号染色体上q21.1处重复6.68Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及1个RefSeq蛋白编码基因。
+MA-67	chr1:151336907-151403321_dup	1.38	1q21.3	66.42Kb	VUS	1号染色体上q21.3处重复66.41Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及3个RefSeq蛋白编码基因。覆盖了POGZ基因[OMIM:614787]，经查询ClinGen数据库资源，有充分证据(Haploinsufficiency score:3)表明该基因单倍剂量不足的患者表现出WHITE-SUTTON SYNDROME(WHSUS)的临床表型[ISCA ID:ISCA-34084]，WHSUS为常染色显性遗传，患者主要表现为小头畸形，短脖子，特殊面容（面中部发育不全，人中短，尖下巴，身材矮小，智力障碍，肌张力减退，自闭症，喂养困难，胃食管反流，视神经萎缩等，部分患者还表现为先天性心脏缺陷，感音神经性听力损失等。；覆盖了PSMB4基因[OMIM:602177]，?Proteasome-associated autoinflammatory syndrome 3 and digenic forms, 617591 (3), Autosomal recessive。
+MA-67	chr3:28357776-28579554_dup	1.52	3p24.1	0.22Mb	VUS	3号染色体上p24.1处重复0.22Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及3个RefSeq蛋白编码基因。
+MA-67	chr6:29855504-30030229_dup	0.00	6p22.1	0.17Mb	VUS	6号染色体上p22.1处重复0.17Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及2个RefSeq蛋白编码基因。覆盖了HLA-A基因[OMIM:142800]，{Hypersensitivity syndrome, carbamazepine-induced, susceptibility to}, 608579 (3)。
+MA-67	chr6:31129123-31325046_dup	0.05	6p21.33	0.20Mb	VUS	6号染色体上p21.33处重复0.2Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及4个RefSeq蛋白编码基因。覆盖了HLA-B基因[OMIM:142830]，{Stevens-Johnson syndrome, susceptibility to}, 608579 (3); {Spondyloarthropathy, susceptibility to, 1}, 106300 (3), Multifactorial; {Abacavir hypersensitivity, susceptibility to} (3); {Drug-induced liver injury due to flucloxacillin} (3); {Synovitis, chronic, susceptibility to} (3); {Toxic epidermal necrolysis, susceptibility to}, 608579 (3)；覆盖了HLA-C基因[OMIM:142840]，{Psoriasis susceptibility 1}, 177900 (3), Multifactorial; {HIV-1 viremia, susceptibility to}, 609423 (3)。
+MA-67	chr7:143421485-143839816_dup	1.25	7q35	0.42Mb	VUS	7号染色体上q35处重复0.42Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及11个RefSeq蛋白编码基因。
+MA-67	chr11:89486085-89537740_dup	1.02	11q14.3	51.66Kb	VUS	11号染色体上q14.3处重复51.66Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及1个RefSeq蛋白编码基因。
+MA-67	chr20:26061713-26063686_dup	Na	20p11.1	1.97Kb	VUS	20号染色体上p11.1处重复1.97Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。未覆盖RefSeq蛋白编码基因。
+MA-67	chrY:14904830-15469938_dup	1.21	Yq11.21-q11.221	0.57Mb	VUS	Y号染色体上q11.21-q11.221处重复0.57Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及3个RefSeq蛋白编码基因。覆盖了USP9Y基因[OMIM:400005]，该基因的突变与SPERMATOGENIC FAILURE, Y-LINKED, 2(SPGFY2)[OMIM:415000]相关，其患者主要表现为无精症或严重的少精症致不育。
+MA-67	chr11:89771863-89820166_del	0.11	11q14.3	48.30Kb	VUS	11号染色体上q14.3处缺失48.3Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及2个RefSeq蛋白编码基因。
+MA-67	chr14:105411198-105413356_del	0.25	14q32.33	2.16Kb	VUS	14号染色体上q32.33处缺失2.16Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及1个RefSeq蛋白编码基因。
+MA-67	chr16:15068974-15124050_del	0.68	16p13.11	55.08Kb	VUS	16号染色体上p13.11处缺失55.08Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及1个RefSeq蛋白编码基因。
+MA-67	chr22:17175433-17265333_del	0.00	22q11.1	89.90Kb	VUS	22号染色体上q11.1处缺失89.9Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及1个RefSeq蛋白编码基因。

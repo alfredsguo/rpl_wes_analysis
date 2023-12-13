@@ -1,0 +1,3 @@
+Sample	cnv	CopyRatio	CytoBand	Size	ClinilcalLevel	summary
+MA-75	chr16:74366274-74446323_dup	1.27	16q23.1	80.05Kb	VUS	16号染色体上q23.1处重复80.05Kb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及2个RefSeq蛋白编码基因。
+MA-75	chr6:31129123-31239902_del	0	6p21.33	0.11Mb	VUS	6号染色体上p21.33处缺失0.11Mb区域，按照ACMG指南，该CNV的致病性评级为VUS。涉及3个RefSeq蛋白编码基因。覆盖了HLA-C基因[OMIM:142840]，{Psoriasis susceptibility 1}, 177900 (3), Multifactorial; {HIV-1 viremia, susceptibility to}, 609423 (3)。
